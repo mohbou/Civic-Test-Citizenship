@@ -1,5 +1,6 @@
 package com.mohbou.enhancedtestcivic.data.network
 
+import android.annotation.SuppressLint
 import com.mohbou.enhancedtestcivic.data.network.response.AnswerResponse
 import com.mohbou.enhancedtestcivic.data.network.response.QuestionResponse
 import com.mohbou.enhancedtestcivic.domain.Question
@@ -10,16 +11,21 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.SingleSubject
 import org.json.JSONObject
 import java.io.InputStream
+import javax.inject.Inject
+
+/*
+*NetworkRepository on this scenario is reading from a JSON file, we will improve it once we have an alternative
+* Rest calls?
+ */
+class NetworkRepository @Inject constructor(val inputStream: InputStream){
 
 
-class NetworkRepository {
-
-
+    @SuppressLint("CheckResult")
     fun getAllQuestions(): Observable<Result<List<Question>>>? {
         val allQuestionsSubject = SingleSubject.create<Result<List<Question>>>()
 
-        getQuestions()?.subscribeOn(Schedulers.io())
-                      ?.observeOn(AndroidSchedulers.mainThread())?.subscribe(
+        getQuestions().subscribeOn(Schedulers.io())
+                      .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {
                     allQuestionsSubject.onSuccess(Result.fromData(Mapper.toQuestionList(it)))
                 },
@@ -29,14 +35,14 @@ class NetworkRepository {
         return allQuestionsSubject.toObservable()
     }
 
-    private fun getQuestions(): Observable<List<QuestionResponse>>? {
-        val source:InputStream? = null
+    private fun getQuestions(): Observable<List<QuestionResponse>> {
+
         val questions:MutableList<QuestionResponse>?= mutableListOf()
 
-        val inputStream = source
+
         val json = inputStream
-            ?.readBytes()
-            ?.toString(Charsets.UTF_8)
+            .readBytes()
+            .toString(Charsets.UTF_8)
 
 
         val jsonBody = JSONObject(json)

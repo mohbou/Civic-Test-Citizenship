@@ -1,11 +1,13 @@
 package com.mohbou.enhancedtestcivic.di
 
+import android.content.Context
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import dagger.Module
 import dagger.Provides
+import java.io.InputStream
 
-@Module
+@Module(includes=[AppModule::class])
 class DataModule {
 
     @ApplicationScope
@@ -16,8 +18,14 @@ class DataModule {
 
     @ApplicationScope
     @Provides
-    fun provideNetworkRepository(): NetworkRepository {
-        return NetworkRepository()
+    fun provideNetworkRepository(inputStream: InputStream): NetworkRepository {
+        return NetworkRepository(inputStream)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideInputStream(context: Context): InputStream {
+        return context.resources.openRawResource(context.resources.getIdentifier("test_civic_question", "raw", context.packageName))
     }
 
 }

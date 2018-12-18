@@ -1,6 +1,7 @@
 package com.mohbou.enhancedtestcivic.data.network
 
 import com.mohbou.enhancedtestcivic.data.network.response.QuestionResponse
+import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.domain.Question
 
 object Mapper {
@@ -12,7 +13,11 @@ object Mapper {
     }
 
     private fun toQuestion(questionResponse: QuestionResponse): Question {
-        return Question(id=questionResponse.id)
+        val answerList = ArrayList<Answer>(questionResponse.answers?.size ?:0)
+        questionResponse.answers?.forEachIndexed { _, answerResponse ->
+            answerList.add(Answer(answerResponse.id,answerResponse.answer)) }
+
+        return Question(id=questionResponse.id,question = questionResponse.question,answers = answerList)
     }
 
 }
