@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.domain.Question
 import com.mohbou.enhancedtestcivic.features.home.viewholder.QuestionListViewHolder
+import io.reactivex.subjects.PublishSubject
 
 class HomeAdapter(val context: Context):RecyclerView.Adapter<QuestionListViewHolder>() {
 
@@ -17,8 +18,11 @@ class HomeAdapter(val context: Context):RecyclerView.Adapter<QuestionListViewHol
         }
 
 
+  // publish subject questionDetailClickedSubject to serve as Obeservable when user click on question and want to see the Answers
+ val questionDetailClickedSubject=PublishSubject.create<Question>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionListViewHolder {
-        return QuestionListViewHolder(LayoutInflater.from(context).inflate(R.layout.question_list_item,parent,false))
+        return QuestionListViewHolder(LayoutInflater.from(context).inflate(R.layout.question_list_item,parent,false),questionDetailClickedSubject)
     }
 
     override fun getItemCount(): Int {

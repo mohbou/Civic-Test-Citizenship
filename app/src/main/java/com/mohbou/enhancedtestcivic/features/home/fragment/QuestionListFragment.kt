@@ -1,5 +1,6 @@
 package com.mohbou.enhancedtestcivic.features.home.fragment
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
@@ -70,7 +71,15 @@ class QuestionListFragment : Fragment() {
         setupRecyclerView()
         subscribeForViewStateChange()
         subscribeForQuestionList()
+        subscribeForQuestionDetail()
         lifecycle.addObserver(viewModel)
+    }
+
+    @SuppressLint("CheckResult")
+    private fun subscribeForQuestionDetail() {
+        homeAdapter?.questionDetailClickedSubject?.subscribe{
+            startActivity(viewModel.intentForQuestionDetailActivity(it.id))
+        }
     }
 
     private fun subscribeForQuestionList() {

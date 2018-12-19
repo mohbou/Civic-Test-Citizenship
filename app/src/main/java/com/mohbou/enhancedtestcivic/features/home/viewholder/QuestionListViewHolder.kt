@@ -4,9 +4,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.domain.Question
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.question_list_item.view.*
 
-class QuestionListViewHolder(view: View):RecyclerView.ViewHolder(view) {
+class QuestionListViewHolder(view: View, questionDetailClickedSubject:PublishSubject<Question>):RecyclerView.ViewHolder(view) {
 
     private val questionStatement = view.question_statement
     private val questionToReviewIcon =view.question_toreview
@@ -24,6 +25,10 @@ class QuestionListViewHolder(view: View):RecyclerView.ViewHolder(view) {
                     question!!.review=true
                 }
             }
+        }
+
+        questionStatement.setOnClickListener {
+            questionDetailClickedSubject.onNext(question!!)
         }
     }
 

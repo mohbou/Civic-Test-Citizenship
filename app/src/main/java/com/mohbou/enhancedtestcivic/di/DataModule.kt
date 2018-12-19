@@ -1,6 +1,7 @@
 package com.mohbou.enhancedtestcivic.di
 
 import android.content.Context
+import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import dagger.Module
@@ -26,6 +27,12 @@ class DataModule {
     @Provides
     fun provideInputStream(context: Context): InputStream {
         return context.resources.openRawResource(context.resources.getIdentifier("test_civic_question", "raw", context.packageName))
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideIntentFactory(application: Context): IntentFactory {
+        return IntentFactory(application)
     }
 
 }

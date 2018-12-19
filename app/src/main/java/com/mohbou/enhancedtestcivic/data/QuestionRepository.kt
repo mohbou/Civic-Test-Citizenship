@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import com.mohbou.enhancedtestcivic.domain.Question
+import java.util.*
 import javax.inject.Inject
 
 class QuestionRepository @Inject constructor(val networkRepository: NetworkRepository) {
@@ -19,5 +20,9 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
         }
 
         return questionListLiveData
+    }
+
+    fun getQuestionQuestionById(questionId:UUID):Question {
+        return Question()
     }
 }
