@@ -22,7 +22,19 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
         return questionListLiveData
     }
 
-    fun getQuestionQuestionById(questionId:UUID):Question {
-        return Question()
+    // this method will help to get the index of a question and set the current Item in viewpager accordingly
+
+    fun getIndexQuestionById(questionId: UUID): LiveData<Int> {
+        val index= MutableLiveData<Int>()
+        getAllQuestions().value?.forEachIndexed { tempIndex, question ->
+            if (question.id==questionId) {
+                index.value = tempIndex
+
+
+            }
+        }
+        return index
     }
+
+
 }

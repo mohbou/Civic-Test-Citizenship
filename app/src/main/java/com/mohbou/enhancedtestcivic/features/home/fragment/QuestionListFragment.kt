@@ -86,6 +86,7 @@ class QuestionListFragment : Fragment() {
         viewModel.getAllQuestions()?.observe(this, Observer {
             setAdapterItems(it)
         })
+
     }
 
     private fun setAdapterItems(list: List<Question>?) {

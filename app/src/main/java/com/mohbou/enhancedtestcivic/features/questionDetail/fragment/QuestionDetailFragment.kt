@@ -1,66 +1,61 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.fragment
 
-import android.content.Context
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import com.mohbou.enhancedtestcivic.R
-import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.common.Constants
+import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
+import java.util.*
+import javax.inject.Inject
 
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [QuestionDetailFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [QuestionDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class QuestionDetailFragment : Fragment() {
 
-    private var questionId: String? = null
+    private var questionId: UUID? = null
 
     private var listener: OnFragmentInteractionListener? = null
 
-    init {
-        QuestionApplication.appComponent.inject(this)
-    }
-
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: QuestionDetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            questionId = it.getString(Constants.QUESTION_ID)
+            questionId = it.getSerializable(Constants.QUESTION_ID) as UUID
 
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_question_detail, container, false)
+        val view = inflater.inflate(R.layout.fragment_question_detail, container, false)
+        viewModel = ViewModelProviders.of(activity!!,viewModelFactory).get(QuestionDetailViewModel::class.java)
+        return view
     }
 
-   
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupRecyclerView()
+    }
+
+    private fun setupRecyclerView() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
-    }
+
 
     override fun onDetach() {
         super.onDetach()
@@ -84,19 +79,12 @@ class QuestionDetailFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param questionId Parameter 1.
-         * @return A new instance of fragment QuestionDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(questionId: String) =
+        fun newInstance(questionID: UUID) =
             QuestionDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(Constants.QUESTION_ID, questionId)
+                    putSerializable(Constants.QUESTION_ID, questionID)
 
                 }
             }
