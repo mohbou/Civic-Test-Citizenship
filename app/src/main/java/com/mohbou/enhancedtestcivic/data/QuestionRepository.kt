@@ -3,6 +3,7 @@ package com.mohbou.enhancedtestcivic.data
 import android.annotation.SuppressLint
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import com.mohbou.enhancedtestcivic.domain.Question
 import java.util.*
@@ -16,8 +17,7 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
             if(it.success && it.data?.size!!>0) {
                 questionListLiveData.value=it.data
             }
-
-        }
+           }
 
         return questionListLiveData
     }
@@ -34,6 +34,14 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
             }
         }
         return index
+    }
+
+    fun getQuestionById(questionId: UUID?): LiveData<Question> {
+        val questionLiveData = MutableLiveData<Question>()
+
+        networkRepository.getQuestionById(questionId)
+
+        return questionLiveData
     }
 
 

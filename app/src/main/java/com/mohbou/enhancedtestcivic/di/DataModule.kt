@@ -1,6 +1,7 @@
 package com.mohbou.enhancedtestcivic.di
 
 import android.content.Context
+import com.google.gson.Gson
 import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
@@ -19,8 +20,8 @@ class DataModule {
 
     @ApplicationScope
     @Provides
-    fun provideNetworkRepository(inputStream: InputStream): NetworkRepository {
-        return NetworkRepository(inputStream)
+    fun provideNetworkRepository(inputStream: InputStream,gson:Gson): NetworkRepository {
+        return NetworkRepository(inputStream,gson)
     }
 
     @ApplicationScope
@@ -33,6 +34,12 @@ class DataModule {
     @Provides
     fun provideIntentFactory(application: Context): IntentFactory {
         return IntentFactory(application)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideGson():Gson {
+        return Gson()
     }
 
 }

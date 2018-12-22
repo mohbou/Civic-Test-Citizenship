@@ -5,13 +5,17 @@ import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.common.Constants
+import com.mohbou.enhancedtestcivic.features.questionDetail.adapters.QuestionDetailAdapter
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
+import kotlinx.android.synthetic.main.fragment_question_detail.*
 import java.util.*
 import javax.inject.Inject
 
@@ -25,6 +29,8 @@ class QuestionDetailFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: QuestionDetailViewModel
+
+    private var questionDetailAdapter:QuestionDetailAdapter? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +50,21 @@ class QuestionDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+        subscribeForAnswerList()
+
+    }
+
+    private fun subscribeForAnswerList() {
+        viewModel.getQuestionById(questionId)
     }
 
     private fun setupRecyclerView() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val layoutManager = LinearLayoutManager(activity)
+        recycler_view_answer.layoutManager = layoutManager
+        recycler_view_answer.addItemDecoration(DividerItemDecoration(activity,layoutManager.orientation))
+        questionDetailAdapter = QuestionDetailAdapter(activity!!.applicationContext)
+        recycler_view_answer.adapter = questionDetailAdapter
+
     }
 
 

@@ -1,7 +1,8 @@
 package com.mohbou.enhancedtestcivic.data.network
 
 import android.annotation.SuppressLint
-import com.mohbou.enhancedtestcivic.data.network.response.AnswerResponse
+import com.google.gson.Gson
+import com.mohbou.enhancedtestcivic.data.network.response.MyJson
 import com.mohbou.enhancedtestcivic.data.network.response.QuestionResponse
 import com.mohbou.enhancedtestcivic.domain.Question
 import com.mohbou.enhancedtestcivic.domain.Result
@@ -9,7 +10,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.SingleSubject
-import org.json.JSONObject
 import java.io.InputStream
 import java.util.*
 import javax.inject.Inject
@@ -18,14 +18,15 @@ import javax.inject.Inject
 *NetworkRepository on this scenario is reading from a JSON file, we will improve it once we have an alternative
 * Rest calls?
  */
-class NetworkRepository @Inject constructor(val inputStream: InputStream){
+class NetworkRepository @Inject constructor(val inputStream: InputStream, var gson:Gson){
+
 
 
     @SuppressLint("CheckResult")
     fun getAllQuestions(): Observable<Result<List<Question>>>? {
         val allQuestionsSubject = SingleSubject.create<Result<List<Question>>>()
 
-        getQuestions().subscribeOn(Schedulers.io())
+        Observable.fromCallable{getQuestions()}.subscribeOn(Schedulers.io())
                       .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 {
                     allQuestionsSubject.onSuccess(Result.fromData(Mapper.toQuestionList(it)))
@@ -40,51 +41,31 @@ class NetworkRepository @Inject constructor(val inputStream: InputStream){
 
 
 
-    private fun getQuestions(): Observable<List<QuestionResponse>> {
+    private fun getQuestions(): List<QuestionResponse> {
 
         val questions:MutableList<QuestionResponse>?= mutableListOf()
-
 
         val json = inputStream
             .readBytes()
             .toString(Charsets.UTF_8)
 
+        val myTests = gson.fromJson<MyJson>(json, MyJson::class.java)
 
-        val jsonBody = JSONObject(json)
+        myTests.test.forEach { sections ->
+            sections.section_content
+                .forEach { subSection ->
+                questions?.addAll(subSection.questionResponse)
+                 } }
 
-        val jsonArray = jsonBody.getJSONArray("test")
 
-        for (i in 0 until jsonArray.length()) {
-            val jsonSection = jsonArray.getJSONObject(i)
-            val sectionName = jsonSection.getString("section_name")
-            val subSection = jsonSection.getJSONArray("section_content")
-            for (j in 0 until subSection.length()) {
-                val jsonSubSection = subSection.getJSONObject(j)
-                val subSectionName = jsonSubSection.getString("sub_section_name")
-                val subSections = jsonSubSection.getJSONArray("sub_section")
-                for (x in 0 until subSections.length()) {
-                    val jsonQuestion = subSections.getJSONObject(x)
-                    val questionStatement = jsonQuestion.getString("question")
-                    val question=
-                        QuestionResponse(question = questionStatement)
+        return questions!!.toList()
 
-                    val jsonAnswers = jsonQuestion.getJSONArray("Answer")
-                    val answers = mutableListOf<AnswerResponse>()
-                    for (v in 0 until jsonAnswers.length()) {
-                        val jsonAnswer = jsonAnswers.getJSONObject(v)
-                        val answerStatement = jsonAnswer.getString("answer")
-                        val answer = AnswerResponse(answer = answerStatement)
-                        answers.add(answer)
+    }
 
-                    }
-                    question.answers =answers
-                    questions?.add(question)
-                }
+    fun getQuestionById(questionId: UUID?):Observable<Result<Question>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
-            }
-        }
 
-        return Observable.just(questions)
 
     }
 

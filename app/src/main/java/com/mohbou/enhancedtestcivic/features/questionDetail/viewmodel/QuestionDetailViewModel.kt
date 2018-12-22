@@ -37,4 +37,8 @@ class QuestionDetailViewModel @Inject constructor(private val questionRepository
         subscription.dispose()
         super.onCleared()
     }
+
+    fun getQuestionById(questionId: UUID?):LiveData<Question> {
+        return questionRepository.getQuestionById(questionId)
+    }
 }
