@@ -1,9 +1,12 @@
 package com.mohbou.enhancedtestcivic.di
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import com.google.gson.Gson
 import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
+import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
+import com.mohbou.enhancedtestcivic.data.database.repository.DBRepository
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import dagger.Module
 import dagger.Provides
@@ -14,8 +17,8 @@ class DataModule {
 
     @ApplicationScope
     @Provides
-    fun provideQuestionRepository(networkRepository: NetworkRepository): QuestionRepository {
-        return QuestionRepository(networkRepository)
+    fun provideQuestionRepository(networkRepository: NetworkRepository,dbRepository: DBRepository): QuestionRepository {
+        return QuestionRepository(networkRepository,dbRepository)
     }
 
     @ApplicationScope
@@ -40,6 +43,18 @@ class DataModule {
     @Provides
     fun provideGson():Gson {
         return Gson()
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideDatabase(application: Context):CivicTestDatabase {
+        return Room.databaseBuilder(application,CivicTestDatabase::class.java,"civictest").build()
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideDBRepository(civicTestDatabase: CivicTestDatabase):DBRepository {
+        return DBRepository(civicTestDatabase)
     }
 
 }
