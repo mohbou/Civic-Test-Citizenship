@@ -13,11 +13,11 @@ object Mapper {
     }
 
     private fun toQuestion(questionResponse: QuestionResponse): Question {
-        val answerList = ArrayList<Answer>(questionResponse.answers?.size ?:0)
-        questionResponse.answers?.forEachIndexed { _, answerResponse ->
-            answerList.add(Answer(answerResponse.id,answerResponse.answer)) }
+        val answerList = ArrayList<Answer>(questionResponse.answerResponse?.size ?:0)
+        questionResponse.answerResponse?.forEachIndexed { _, answerResponse ->
+            answerList.add(Answer(answer=answerResponse.answer)) }
 
-        return Question(id=questionResponse.id,question = questionResponse.question,answers = answerList)
+        return Question(question = questionResponse.question,answers = answerList)
     }
 
 }

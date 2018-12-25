@@ -2,6 +2,7 @@ package com.mohbou.enhancedtestcivic.data.database.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
 import com.mohbou.enhancedtestcivic.data.database.dao.QuestionDao
 import com.mohbou.enhancedtestcivic.data.database.entities.AnswerEntity
@@ -10,23 +11,40 @@ import com.mohbou.enhancedtestcivic.data.database.entities.QuestionWithAnswersEn
 import com.mohbou.enhancedtestcivic.data.database.utils.DBMapper
 import com.mohbou.enhancedtestcivic.domain.Question
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.internal.operators.observable.ObservableReplay.observeOn
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
 
     fun getAllQuestions(): LiveData<List<Question>> {
-
-        val questionList = DBMapper.toQuestionList(questionDao().getAllQuestions().value!!)
         val questions= MutableLiveData<List<Question>>()
-        questions.value=questionList
 
+
+
+  questionDao().getAllQuestions()?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())?.subscribe {
+      it ->  Log.d("numberofrow","enters here in db")
+             questions.postValue(DBMapper.toQuestionList(it))
+
+ }
         return questions
+
     }
 
     fun getNumberOfRows(): Single<Int>? = civicTestDatabase.getQuestionDao().getNumberOfRows()
 
     fun addQuestions(questions: List<Question>) {
-        questionDao().addAllQuestions(DBMapper.toEntityQuestionList(questions))
-        questionDao().addAllAnswers(DBMapper.toAnswersEntityList(questions))
+        GlobalScope.launch{
+
+            questionDao().addAllQuestions(DBMapper.toEntityQuestionList(questions))
+            questionDao().addAllAnswers(DBMapper.toAnswersEntityList(questions))
+
+
+
+        }
 
     }
 

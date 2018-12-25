@@ -27,7 +27,7 @@ object DBMapper {
     }
 
     fun toAnswersEntityList(questions:List<Question>):List<AnswerEntity> {
-       return questions.flatMap (this::toAnswerEntityList)
+       return questions.flatMap (this::toAnswerEntityList).toList()
     }
 
     private fun toQuestion(question: QuestionWithAnswersEntity):Question {

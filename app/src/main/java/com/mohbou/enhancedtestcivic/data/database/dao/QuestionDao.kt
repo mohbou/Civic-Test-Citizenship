@@ -24,7 +24,7 @@ interface QuestionDao {
 
     @Transaction
     @Query("SELECT * FROM question")
-    fun getAllQuestions():LiveData<List<QuestionWithAnswersEntity>>
+    fun getAllQuestions():Single<List<QuestionWithAnswersEntity>>?
 
     @Transaction
     @Query("SELECT * FROM question WHERE id = :questionId")
@@ -32,4 +32,8 @@ interface QuestionDao {
 
     @Query("SELECT COUNT(id) FROM question")
     fun getNumberOfRows(): Single<Int>?
+
+    @Transaction
+    @Query("SELECT * FROM question")
+    fun getAllQuestionsBis():Single<List<QuestionWithAnswersEntity>>?
 }
