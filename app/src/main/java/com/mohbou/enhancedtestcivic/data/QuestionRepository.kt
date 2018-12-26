@@ -16,24 +16,6 @@ import javax.inject.Inject
 class QuestionRepository @Inject constructor(val networkRepository: NetworkRepository,val dbRepository: DBRepository) {
     @SuppressLint("CheckResult")
     fun getAllQuestions(): LiveData<List<Question>> {
-
-
-//
-//        dbRepository.getNumberOfRows()?.subscribeOn(Schedulers.io())
-//            ?.observeOn(AndroidSchedulers.mainThread())?.subscribe { rows ->  if(rows==0) {
-//                Log.d("numberofrow",rows.toString())
-                networkRepository.getAllQuestions()?.subscribe {
-                    if(it.success && it.data?.size!!>0) {
-                        dbRepository.addQuestions(it.data)
-
-                    }
-                }
-
-//            }
-//}
-
-
-
         return dbRepository.getAllQuestions()
     }
 

@@ -24,7 +24,7 @@ interface QuestionDao {
 
     @Transaction
     @Query("SELECT * FROM question")
-    fun getAllQuestions():Single<List<QuestionWithAnswersEntity>>?
+    fun getAllQuestions():List<QuestionWithAnswersEntity>?
 
     @Transaction
     @Query("SELECT * FROM question WHERE id = :questionId")

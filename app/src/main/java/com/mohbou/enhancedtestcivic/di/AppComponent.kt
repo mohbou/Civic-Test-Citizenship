@@ -1,6 +1,8 @@
 package com.mohbou.enhancedtestcivic.di
 
+import android.content.Context
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
+import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import com.mohbou.enhancedtestcivic.features.home.fragment.QuestionListFragment
 import com.mohbou.enhancedtestcivic.features.home.viewmodel.QuestionListViewModel
@@ -18,6 +20,7 @@ interface AppComponent {
     fun inject(networkRepository: NetworkRepository)
     fun inject(questionDetailPagerFragment: QuestionDetailPagerFragment)
     fun inject(questionDetailViewModel: QuestionDetailViewModel)
+    fun inject(civicTestDatabase: CivicTestDatabase)
 
 
 }
