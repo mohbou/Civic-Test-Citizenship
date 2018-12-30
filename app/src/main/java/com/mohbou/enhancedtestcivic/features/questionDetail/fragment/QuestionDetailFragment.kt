@@ -98,7 +98,7 @@ class QuestionDetailFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(questionID: UUID) =
+        fun newInstance(questionID: String) =
             QuestionDetailFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(Constants.QUESTION_ID, questionID)

@@ -7,8 +7,8 @@ import android.arch.persistence.room.PrimaryKey
 import com.mohbou.enhancedtestcivic.domain.Answer
 import java.util.*
 
-@Entity(tableName = "question",indices = [Index(value = ["id"])])
-data class QuestionEntity(@PrimaryKey
+@Entity(tableName = "question_table",indices = [Index(value = ["id"])])
+data class QuestionEntity(@PrimaryKey(autoGenerate = false)
                           @ColumnInfo(name = "id")
                           val id: String,
                           val question: String,

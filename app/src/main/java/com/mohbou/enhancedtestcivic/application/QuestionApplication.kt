@@ -22,9 +22,7 @@ class QuestionApplication:Application() {
                                          .appModule(AppModule(this))
                                          .build()
 
-        val currentDBPath = applicationContext.getDatabasePath("civictest").absolutePath
 
-        Log.d("paths",currentDBPath)
 
     }
 }

@@ -8,6 +8,7 @@ import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.data.database.entities.QuestionEntity
 import com.mohbou.enhancedtestcivic.domain.Question
+import com.mohbou.enhancedtestcivic.domain.QuestionStub
 import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import javax.inject.Inject
@@ -35,6 +36,7 @@ class QuestionListViewModel @Inject constructor(private val questionRepository: 
 
 
 
+
     override fun onCleared() {
         subscription.dispose()
         super.onCleared()
@@ -42,7 +44,7 @@ class QuestionListViewModel @Inject constructor(private val questionRepository: 
 
 
 
-    fun intentForQuestionDetailActivity(questionID: UUID?): Intent {
+    fun intentForQuestionDetailActivity(questionID: String?): Intent {
         return intentFactory.intentForQuestionDetailActivity(questionID)
     }
 }

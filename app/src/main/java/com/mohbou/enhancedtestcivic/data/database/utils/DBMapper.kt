@@ -10,11 +10,11 @@ import java.util.*
 object DBMapper {
 
    private fun toEntityQuestion(question: Question): QuestionEntity {
-      return QuestionEntity(question.id.toString(), question.question!!, false)
+      return QuestionEntity(question.id, question.question!!, false)
     }
 
     private fun toAnswerEntity(answer: Answer,questionId:String): AnswerEntity {
-        return AnswerEntity(answer.id.toString(), answer.answer, questionId)
+        return AnswerEntity(answer.id, answer.answer, questionId)
     }
 
     fun toEntityQuestionList(questions: List<Question>): List<QuestionEntity> {
@@ -23,7 +23,7 @@ object DBMapper {
     }
 
    private fun toQuestion(question:QuestionEntity):Question {
-        return Question(UUID.fromString(question.id),question.question,review = question.review)
+        return Question(question.id,question.question,review = question.review)
     }
 
     fun toQuestions(questions:List<QuestionEntity>):List<Question> {
@@ -40,7 +40,7 @@ object DBMapper {
 
     private fun toQuestion(question: QuestionWithAnswersEntity):Question {
 
-        return Question(UUID.fromString(question.questionEntity.id),question.questionEntity.question,toAnswerList(question.answersEntities),question.questionEntity.review)
+        return Question(question.questionEntity.id,question.questionEntity.question,toAnswerList(question.answersEntities),question.questionEntity.review)
 
     }
 
@@ -53,6 +53,6 @@ object DBMapper {
     }
 
     private fun toAnswer(answerEntity: AnswerEntity): Answer {
-        return Answer(UUID.fromString(answerEntity.id),answerEntity.answer)
+        return Answer(answerEntity.id,answerEntity.answer)
     }
 }

@@ -8,7 +8,7 @@ import java.util.*
 import javax.inject.Inject
 
 class IntentFactory @Inject constructor(val applicationContext: Context) {
-    fun intentForQuestionDetailActivity(questionID: UUID?): Intent {
+    fun intentForQuestionDetailActivity(questionID: String?): Intent {
         val intent = Intent(applicationContext, QuestionDetailActivity::class.java)
         intent.putExtra(Constants.QUESTION_ID,questionID)
         return intent
