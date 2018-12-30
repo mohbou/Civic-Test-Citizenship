@@ -28,10 +28,7 @@ class QuestionDetailViewModel @Inject constructor(private val questionRepository
 
     fun getAllQuestions(): LiveData<List<Question>>? = questionRepository.getAllQuestions()
 
-    fun getIndexQuestionById(questionId: UUID):LiveData<Int> {
-        return questionRepository.getIndexQuestionById(questionId)
 
-    }
 
     override fun onCleared() {
         subscription.dispose()

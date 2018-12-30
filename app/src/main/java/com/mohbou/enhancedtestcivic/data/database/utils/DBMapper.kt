@@ -22,6 +22,14 @@ object DBMapper {
 
     }
 
+   private fun toQuestion(question:QuestionEntity):Question {
+        return Question(UUID.fromString(question.id),question.question,review = question.review)
+    }
+
+    fun toQuestions(questions:List<QuestionEntity>):List<Question> {
+        return questions.map { it -> toQuestion(it) }.toList()
+    }
+
     private fun toAnswerEntityList(answers: Question): List<AnswerEntity> {
         return answers.answers!!.map{it-> toAnswerEntity(it,answers.id.toString())}.toList()
     }

@@ -22,39 +22,31 @@ import kotlinx.coroutines.launch
 class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
 
     fun getAllQuestions(): LiveData<List<Question>> {
-        val questions= MutableLiveData<List<Question>>()
-        questions.postValue(DBMapper.toQuestionList(questionDao().getAllQuestions()!!))
-
-
-
-//  questionDao().getAllQuestions()?.subscribeOn(Schedulers.computation())
-//      ?.observeOn(AndroidSchedulers.mainThread())
-//            ?.subscribe {
-//      it ->  Log.d("numberofrow","enters here in db")
-//
-//
-// }
+        val questions  by lazy { MutableLiveData<List<Question>>()}
+        val disposable = questionDao().getQuestions()?.
+               map { qs -> DBMapper.toQuestions(qs) }?.repeatUntil{
+            questions.value?.isNotEmpty() ?:false
+        }
+            ?.subscribeOn(Schedulers.computation())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe {
+                questions.postValue(it)
+            }
 
         return questions
 
     }
 
-    fun getNumberOfRows(): Single<Int>? = civicTestDatabase.getQuestionDao().getNumberOfRows()
-
-    fun addQuestions(questions: List<Question>) {
-        GlobalScope.launch{
-
-            questionDao().addAllQuestions(DBMapper.toEntityQuestionList(questions))
-            questionDao().addAllAnswers(DBMapper.toAnswersEntityList(questions))
 
 
 
-        }
-
-    }
 
     private fun questionDao(): QuestionDao {
+
+
       return civicTestDatabase.getQuestionDao()
+
+
     }
 
 }

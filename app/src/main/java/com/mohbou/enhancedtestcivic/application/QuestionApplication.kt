@@ -2,6 +2,8 @@ package com.mohbou.enhancedtestcivic.application
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
+import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
 import com.mohbou.enhancedtestcivic.di.AppComponent
 import com.mohbou.enhancedtestcivic.di.AppModule
 import com.mohbou.enhancedtestcivic.di.DaggerAppComponent
@@ -20,7 +22,9 @@ class QuestionApplication:Application() {
                                          .appModule(AppModule(this))
                                          .build()
 
+        val currentDBPath = applicationContext.getDatabasePath("civictest").absolutePath
 
+        Log.d("paths",currentDBPath)
 
     }
 }

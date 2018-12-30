@@ -28,7 +28,7 @@ abstract fun getQuestionDao(): QuestionDao
 
         private fun buildDatabase(context: Context): CivicTestDatabase {
             return Room.databaseBuilder(context,CivicTestDatabase::class.java,"civictest")
-                .addCallback(object :RoomDatabase.Callback() {
+                   .addCallback(object :RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         val request = OneTimeWorkRequestBuilder<PopulateDatabaseWorker>().build()

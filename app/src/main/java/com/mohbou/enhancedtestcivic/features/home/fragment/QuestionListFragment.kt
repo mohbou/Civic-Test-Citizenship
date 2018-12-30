@@ -88,6 +88,7 @@ class QuestionListFragment : Fragment() {
               setAdapterItems(it)
         })
 
+
     }
 
     private fun setAdapterItems(list: List<Question>?) {
