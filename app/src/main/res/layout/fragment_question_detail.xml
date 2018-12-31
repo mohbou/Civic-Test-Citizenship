@@ -47,9 +47,9 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/answer_list_item"
-    >
+            tools:listitem="@layout/answer_list_item"/>
+    
 
 
-    </android.support.v7.widget.RecyclerView>
+
 </android.support.constraint.ConstraintLayout>

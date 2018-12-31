@@ -1,8 +1,8 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.fragment
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.arch.lifecycle.Observer
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.StringRes
@@ -18,14 +18,13 @@ import com.mohbou.enhancedtestcivic.features.questionDetail.adapters.QuestionDet
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail_pager.*
 import rx.subscriptions.CompositeSubscription
-import java.util.*
 import javax.inject.Inject
 
 
 class QuestionDetailPagerFragment : Fragment() {
 
     //id we receive from main Question List to define where we start in the ViewPager
-    private var questionId: UUID? = null
+    private var questionId: String? = null
 
     private var questionDetailPagerAdapter:QuestionDetailPagerAdapter?=null
 
@@ -44,7 +43,7 @@ class QuestionDetailPagerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            questionId = it.getSerializable(Constants.QUESTION_ID) as UUID
+            questionId = it.getString(Constants.QUESTION_ID)
 
         }
     }
@@ -126,12 +125,12 @@ class QuestionDetailPagerFragment : Fragment() {
          * @param questionId Parameter 1.
          * @return A new instance of fragment QuestionDetailPagerFragment.
          */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(questionId: UUID) =
+        fun newInstance(questionId: String) =
             QuestionDetailPagerFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(Constants.QUESTION_ID, questionId)
+                    putString(Constants.QUESTION_ID, questionId)
 
                 }
             }

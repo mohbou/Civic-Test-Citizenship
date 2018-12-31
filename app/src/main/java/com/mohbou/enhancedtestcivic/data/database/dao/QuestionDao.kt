@@ -6,7 +6,6 @@ import com.mohbou.enhancedtestcivic.data.database.entities.AnswerEntity
 import com.mohbou.enhancedtestcivic.data.database.entities.QuestionEntity
 import com.mohbou.enhancedtestcivic.data.database.entities.QuestionWithAnswersEntity
 import com.mohbou.enhancedtestcivic.domain.Question
-import com.mohbou.enhancedtestcivic.domain.QuestionStub
 import io.reactivex.Single
 
 @Dao
@@ -36,7 +35,7 @@ interface QuestionDao {
 
     @Transaction
     @Query("SELECT * FROM question_table WHERE id = :questionId")
-    fun getQuestionById(questionId:String):LiveData<QuestionWithAnswersEntity>
+    fun getQuestionById(questionId:String?):LiveData<QuestionWithAnswersEntity>
 
     @Query("SELECT COUNT(id) FROM question_table")
     fun getNumberOfRows(): Single<Int>?

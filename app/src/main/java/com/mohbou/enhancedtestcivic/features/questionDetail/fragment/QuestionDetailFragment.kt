@@ -1,5 +1,6 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.fragment
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
@@ -10,19 +11,18 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.common.Constants
+import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.features.questionDetail.adapters.QuestionDetailAdapter
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail.*
-import java.util.*
 import javax.inject.Inject
 
 
 class QuestionDetailFragment : Fragment() {
 
-    private var questionId: UUID? = null
+    private var questionId: String? = null
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -30,18 +30,18 @@ class QuestionDetailFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: QuestionDetailViewModel
 
-    private var questionDetailAdapter:QuestionDetailAdapter? =null
+    private var questionDetailAdapter: QuestionDetailAdapter? =null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            questionId = it.getSerializable(Constants.QUESTION_ID) as UUID
+            questionId = it.getString(Constants.QUESTION_ID)
 
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_question_detail, container, false)
         viewModel = ViewModelProviders.of(activity!!,viewModelFactory).get(QuestionDetailViewModel::class.java)
@@ -55,7 +55,14 @@ class QuestionDetailFragment : Fragment() {
     }
 
     private fun subscribeForAnswerList() {
-        viewModel.getQuestionById(questionId)
+        viewModel.getQuestionById(questionId).observe(this,Observer {
+          question->  question?.let { setAdapterItems(question.answers) }
+
+
+        })
+    }
+    private fun setAdapterItems(list: List<Answer>?) {
+        questionDetailAdapter?.listItems = list
     }
 
     private fun setupRecyclerView() {
@@ -91,7 +98,7 @@ class QuestionDetailFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         fun onFragmentInteraction(uri: Uri)
     }
 
@@ -101,7 +108,7 @@ class QuestionDetailFragment : Fragment() {
         fun newInstance(questionID: String) =
             QuestionDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(Constants.QUESTION_ID, questionID)
+                    putString(Constants.QUESTION_ID, questionID)
 
                 }
             }

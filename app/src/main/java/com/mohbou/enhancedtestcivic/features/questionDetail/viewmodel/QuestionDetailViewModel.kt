@@ -5,9 +5,7 @@ import android.support.annotation.StringRes
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.domain.Question
-import com.mohbou.enhancedtestcivic.features.home.viewmodel.QuestionListViewModel
 import io.reactivex.disposables.CompositeDisposable
-import java.util.*
 import javax.inject.Inject
 
 class QuestionDetailViewModel @Inject constructor(private val questionRepository: QuestionRepository):ViewModel(),LifecycleObserver {
@@ -35,7 +33,7 @@ class QuestionDetailViewModel @Inject constructor(private val questionRepository
         super.onCleared()
     }
 
-    fun getQuestionById(questionId: UUID?):LiveData<Question> {
+    fun getQuestionById(questionId: String?):LiveData<Question> {
         return questionRepository.getQuestionById(questionId)
     }
 }

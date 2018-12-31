@@ -6,11 +6,8 @@ import android.support.annotation.StringRes
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
-import com.mohbou.enhancedtestcivic.data.database.entities.QuestionEntity
 import com.mohbou.enhancedtestcivic.domain.Question
-import com.mohbou.enhancedtestcivic.domain.QuestionStub
 import io.reactivex.disposables.CompositeDisposable
-import java.util.*
 import javax.inject.Inject
 
 class QuestionListViewModel @Inject constructor(private val questionRepository: QuestionRepository,private val intentFactory: IntentFactory):ViewModel(),LifecycleObserver {
@@ -32,16 +29,10 @@ class QuestionListViewModel @Inject constructor(private val questionRepository: 
 
     fun getAllQuestions(): LiveData<List<Question>>? = questionRepository.getAllQuestions()
 
-
-
-
-
-
     override fun onCleared() {
         subscription.dispose()
         super.onCleared()
     }
-
 
 
     fun intentForQuestionDetailActivity(questionID: String?): Intent {
