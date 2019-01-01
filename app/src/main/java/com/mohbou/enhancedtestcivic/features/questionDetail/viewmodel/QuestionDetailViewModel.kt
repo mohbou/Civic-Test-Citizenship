@@ -1,7 +1,7 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel
 
-import android.arch.lifecycle.*
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
+import androidx.lifecycle.*
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.domain.Question

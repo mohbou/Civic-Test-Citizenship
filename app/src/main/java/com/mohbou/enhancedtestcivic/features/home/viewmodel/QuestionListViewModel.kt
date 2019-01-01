@@ -1,8 +1,8 @@
 package com.mohbou.enhancedtestcivic.features.home.viewmodel
 
-import android.arch.lifecycle.*
 import android.content.Intent
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
+import androidx.lifecycle.*
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository

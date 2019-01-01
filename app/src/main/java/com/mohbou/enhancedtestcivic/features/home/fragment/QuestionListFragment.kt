@@ -1,21 +1,18 @@
 package com.mohbou.enhancedtestcivic.features.home.fragment
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.domain.Question
@@ -36,7 +33,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class QuestionListFragment : Fragment() {
+class QuestionListFragment : androidx.fragment.app.Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -125,9 +122,14 @@ class QuestionListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val layoutManager = LinearLayoutManager(activity)
+        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         homeRecyclerView.layoutManager = layoutManager
-        homeRecyclerView.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
+        homeRecyclerView.addItemDecoration(
+            androidx.recyclerview.widget.DividerItemDecoration(
+                activity,
+                layoutManager.orientation
+            )
+        )
         homeAdapter = HomeAdapter(activity!!.applicationContext)
         homeRecyclerView.adapter = homeAdapter
 

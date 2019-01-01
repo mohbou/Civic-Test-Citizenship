@@ -1,11 +1,9 @@
 package com.mohbou.enhancedtestcivic.data.database.entities
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Index
-import android.arch.persistence.room.PrimaryKey
-import com.mohbou.enhancedtestcivic.domain.Answer
-import java.util.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "question_table",indices = [Index(value = ["id"])])
 data class QuestionEntity(@PrimaryKey(autoGenerate = false)

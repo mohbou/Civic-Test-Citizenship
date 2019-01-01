@@ -1,15 +1,15 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.common.Constants
@@ -97,8 +97,13 @@ class QuestionDetailPagerFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        questionDetailPagerAdapter = QuestionDetailPagerAdapter(activity?.supportFragmentManager)
+        questionDetailPagerAdapter = QuestionDetailPagerAdapter(activity?.supportFragmentManager!!)
         question_detail_pager.adapter = questionDetailPagerAdapter
+
+
+
+
+
     }
 
     fun onButtonPressed(uri: Uri) {

@@ -1,7 +1,7 @@
 package com.mohbou.enhancedtestcivic.features.home.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.features.home.fragment.QuestionListFragment
 

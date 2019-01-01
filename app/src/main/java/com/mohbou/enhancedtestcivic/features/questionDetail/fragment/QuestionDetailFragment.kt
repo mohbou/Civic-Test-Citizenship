@@ -1,16 +1,13 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.common.Constants
 import com.mohbou.enhancedtestcivic.domain.Answer
@@ -20,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_question_detail.*
 import javax.inject.Inject
 
 
-class QuestionDetailFragment : Fragment() {
+class QuestionDetailFragment : androidx.fragment.app.Fragment() {
 
     private var questionId: String? = null
 
@@ -66,9 +63,14 @@ class QuestionDetailFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        val layoutManager = LinearLayoutManager(activity)
+        val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         recycler_view_answer.layoutManager = layoutManager
-        recycler_view_answer.addItemDecoration(DividerItemDecoration(activity,layoutManager.orientation))
+        recycler_view_answer.addItemDecoration(
+            androidx.recyclerview.widget.DividerItemDecoration(
+                activity,
+                layoutManager.orientation
+            )
+        )
         questionDetailAdapter = QuestionDetailAdapter(activity!!.applicationContext)
         recycler_view_answer.adapter = questionDetailAdapter
 

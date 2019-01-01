@@ -1,14 +1,13 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.adapters
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewholder.QuestionDetailViewHolder
 
-class QuestionDetailAdapter(val context:Context):RecyclerView.Adapter<QuestionDetailViewHolder>() {
+class QuestionDetailAdapter(val context:Context): androidx.recyclerview.widget.RecyclerView.Adapter<QuestionDetailViewHolder>() {
 
     var listItems: List<Answer>? = null
         set(value) {

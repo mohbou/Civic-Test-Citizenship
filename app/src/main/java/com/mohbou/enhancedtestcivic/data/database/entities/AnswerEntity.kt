@@ -1,6 +1,6 @@
 package com.mohbou.enhancedtestcivic.data.database.entities
 
-import android.arch.persistence.room.*
+import androidx.room.*
 import java.util.*
 
 @Entity(

@@ -1,7 +1,7 @@
 package com.mohbou.enhancedtestcivic.di
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.mohbou.enhancedtestcivic.features.home.viewmodel.QuestionListViewModel
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
 import dagger.Binds

@@ -1,7 +1,7 @@
 package com.mohbou.enhancedtestcivic.data.database.repository
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
 import com.mohbou.enhancedtestcivic.data.database.dao.QuestionDao
 import com.mohbou.enhancedtestcivic.data.database.utils.DBMapper

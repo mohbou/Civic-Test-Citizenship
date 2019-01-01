@@ -1,8 +1,8 @@
 package com.mohbou.enhancedtestcivic.domain
 
 
-import android.arch.persistence.room.ColumnInfo
-import android.arch.persistence.room.Ignore
+import androidx.room.ColumnInfo
+import androidx.room.Ignore
 import java.util.*
 
 data class Question(@ColumnInfo(name = "id")

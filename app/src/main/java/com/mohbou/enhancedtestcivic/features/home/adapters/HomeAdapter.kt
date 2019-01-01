@@ -1,7 +1,6 @@
 package com.mohbou.enhancedtestcivic.features.home.adapters
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.mohbou.enhancedtestcivic.R
@@ -9,7 +8,7 @@ import com.mohbou.enhancedtestcivic.domain.Question
 import com.mohbou.enhancedtestcivic.features.home.viewholder.QuestionListViewHolder
 import io.reactivex.subjects.PublishSubject
 
-class HomeAdapter(val context: Context):RecyclerView.Adapter<QuestionListViewHolder>() {
+class HomeAdapter(val context: Context): androidx.recyclerview.widget.RecyclerView.Adapter<QuestionListViewHolder>() {
 
     var listItems: List<Question>? = null
         set(list) {

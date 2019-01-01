@@ -1,7 +1,7 @@
 package com.mohbou.enhancedtestcivic.data.database.entities
 
-import android.arch.persistence.room.Embedded
-import android.arch.persistence.room.Relation
+import androidx.room.Embedded
+import androidx.room.Relation
 import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.domain.Question
 

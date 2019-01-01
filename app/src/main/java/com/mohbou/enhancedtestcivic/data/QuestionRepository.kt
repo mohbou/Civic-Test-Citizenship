@@ -1,6 +1,6 @@
 package com.mohbou.enhancedtestcivic.data
 
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.LiveData
 import com.mohbou.enhancedtestcivic.data.database.repository.DBRepository
 import com.mohbou.enhancedtestcivic.data.network.NetworkRepository
 import com.mohbou.enhancedtestcivic.domain.Question
