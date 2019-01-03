@@ -17,6 +17,7 @@
             android:id="@+id/answer_text"
             android:layout_marginEnd="8dp" android:textSize="18sp" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#dd000000"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

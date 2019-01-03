@@ -18,7 +18,6 @@ import com.mohbou.enhancedtestcivic.domain.Question
 import com.mohbou.enhancedtestcivic.features.questionDetail.adapters.QuestionDetailPagerAdapter
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail_pager.*
-import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 
@@ -34,7 +33,7 @@ class QuestionDetailPagerFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel:QuestionDetailViewModel
-    private val subscriptions = CompositeSubscription()
+
 
     init {
         QuestionApplication.appComponent.inject(this)
@@ -99,13 +98,17 @@ class QuestionDetailPagerFragment : Fragment() {
 
     private fun setAdapterItems(questionList: List<Question>?) {
         questionDetailPagerAdapter?.listItems=questionList
+
+        questionList?.forEachIndexed{index,question ->
+            if(question.id==questionId)
+                question_detail_pager.currentItem=index
+
+        }
     }
 
     private fun setupViewPager() {
         questionDetailPagerAdapter = QuestionDetailPagerAdapter(activity?.supportFragmentManager!!)
         question_detail_pager.adapter = questionDetailPagerAdapter
-
-
 
 
 
