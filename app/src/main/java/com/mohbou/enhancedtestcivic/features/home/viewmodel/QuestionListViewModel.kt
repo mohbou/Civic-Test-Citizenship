@@ -7,7 +7,6 @@ import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.common.IntentFactory
 import com.mohbou.enhancedtestcivic.data.QuestionRepository
 import com.mohbou.enhancedtestcivic.domain.Question
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 class QuestionListViewModel @Inject constructor(private val questionRepository: QuestionRepository,private val intentFactory: IntentFactory):ViewModel(),LifecycleObserver {
@@ -20,7 +19,7 @@ class QuestionListViewModel @Inject constructor(private val questionRepository: 
     }
 
     val viewState:MutableLiveData<ViewState> = MutableLiveData()
-    private val subscription=CompositeDisposable()
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreated() {
@@ -29,9 +28,8 @@ class QuestionListViewModel @Inject constructor(private val questionRepository: 
 
     fun getAllQuestions(): LiveData<List<Question>>? = questionRepository.getAllQuestions()
 
-    override fun onCleared() {
-        subscription.dispose()
-        super.onCleared()
+    suspend fun updateQuestionReview(question: Question) {
+        questionRepository.updateQuestionReview(question)
     }
 
 

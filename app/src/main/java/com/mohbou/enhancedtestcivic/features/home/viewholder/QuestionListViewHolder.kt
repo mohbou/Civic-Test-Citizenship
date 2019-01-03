@@ -1,12 +1,17 @@
 package com.mohbou.enhancedtestcivic.features.home.viewholder
 
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.domain.Question
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.question_list_item.view.*
 
-class QuestionListViewHolder(view: View, questionDetailClickedSubject:PublishSubject<Question>):
+class QuestionListViewHolder(
+    view: View,
+    questionDetailClickedSubject: PublishSubject<Question>,
+    questionReviewedClicked: MutableLiveData<Question>
+):
     androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
     private val questionStatement = view.question_statement
@@ -19,12 +24,14 @@ class QuestionListViewHolder(view: View, questionDetailClickedSubject:PublishSub
                 if(review) {
                   questionToReviewIcon.setImageResource(R.drawable.ic_review_unselected)
                     question!!.review=false
+
                        }
                 else {
                     questionToReviewIcon.setImageResource(R.drawable.ic_review_selected)
                     question!!.review=true
                 }
             }
+            questionReviewedClicked.value = question
         }
 
         questionStatement.setOnClickListener {

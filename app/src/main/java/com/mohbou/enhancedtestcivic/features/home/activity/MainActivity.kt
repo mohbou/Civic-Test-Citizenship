@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fragmentManager = supportFragmentManager
-        val fragment = QuestionListFragment.newInstance("", "")
+        val fragment = QuestionListFragment.newInstance()
         fragmentManager.beginTransaction().add(R.id.homeContainer, fragment).commit()
     }
 }

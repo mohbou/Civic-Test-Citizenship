@@ -9,8 +9,8 @@ import java.util.*
 
 object DBMapper {
 
-   private fun toEntityQuestion(question: Question): QuestionEntity {
-      return QuestionEntity(question.id, question.question!!, false)
+   fun toEntityQuestion(question: Question): QuestionEntity {
+      return QuestionEntity(question.id, question.question!!, question.review ?:false)
     }
 
     private fun toAnswerEntity(answer: Answer,questionId:String): AnswerEntity {

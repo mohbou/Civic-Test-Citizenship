@@ -19,10 +19,12 @@ import com.mohbou.enhancedtestcivic.domain.Question
 import com.mohbou.enhancedtestcivic.features.home.adapters.HomeAdapter
 import com.mohbou.enhancedtestcivic.features.home.viewmodel.QuestionListViewModel
 import kotlinx.android.synthetic.main.fragment_list_questions.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -34,9 +36,7 @@ private const val ARG_PARAM2 = "param2"
  *
  */
 class QuestionListFragment : androidx.fragment.app.Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private var listener: OnFragmentInteractionListener? = null
 
     private var homeAdapter:HomeAdapter? =null
@@ -46,18 +46,14 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
 
     private lateinit var viewModel: QuestionListViewModel
 
+    private var job: Job?=null
+
 
     init {
         QuestionApplication.appComponent.inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list_questions, container, false)
@@ -70,8 +66,22 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         subscribeForViewStateChange()
         subscribeForQuestionList()
         subscribeForQuestionDetail()
+        subscribeForUpdateQuestionReview()
         lifecycle.addObserver(viewModel)
     }
+
+    private fun subscribeForUpdateQuestionReview() {
+
+        homeAdapter?.questionReviewedClicked?.observe(this, Observer {
+            job =   GlobalScope.launch(Dispatchers.Main) {
+                viewModel.updateQuestionReview(it)
+            }
+        })
+
+    }
+
+
+
 
     @SuppressLint("CheckResult")
     private fun subscribeForQuestionDetail() {
@@ -152,6 +162,7 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        job?.cancel()
     }
 
     /**
@@ -174,19 +185,10 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment QuestionListFragment.
          */
-        // TODO: Rename and change types and number of parameters
+
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            QuestionListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() =QuestionListFragment()
     }
 }

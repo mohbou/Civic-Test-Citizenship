@@ -23,6 +23,9 @@ interface QuestionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAllAnswers(answers:List<AnswerEntity>):List<Long>
 
+    @Update
+    fun updateQuestion(questionEntity: QuestionEntity)
+
     @Transaction
     @Query("SELECT * FROM question_table")
     fun getAllQuestions():Single<List<QuestionWithAnswersEntity>>?

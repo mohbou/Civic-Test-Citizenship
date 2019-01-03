@@ -16,23 +16,26 @@ class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
 
     }
 
-    suspend fun getQuestionWithAnswersById(questionId:String?):LiveData<Question> {
+    suspend fun getQuestionWithAnswersById(questionId: String?): LiveData<Question> {
         val questionLiveData = MutableLiveData<Question>()
         withContext(Dispatchers.IO) {
 
             val question = questionDao().getQuestionById(questionId)
 
-            question?.let {
+            question.let {
                 questionLiveData.postValue(DBMapper.toQuestion(it))
             }
-
 
             return@withContext questionLiveData
 
         }
-
         return questionLiveData
+    }
 
+    suspend fun updateQuestionReview(question:Question) {
+        withContext(Dispatchers.IO) {
+            questionDao().updateQuestion(DBMapper.toEntityQuestion(question))
+        }
     }
 
     private fun questionDao(): QuestionDao {

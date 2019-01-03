@@ -16,5 +16,9 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
         return dbRepository.getQuestionWithAnswersById(questionId)
     }
 
+   suspend fun updateQuestionReview(question:Question) {
+        dbRepository.updateQuestionReview(question)
+    }
+
 
 }
