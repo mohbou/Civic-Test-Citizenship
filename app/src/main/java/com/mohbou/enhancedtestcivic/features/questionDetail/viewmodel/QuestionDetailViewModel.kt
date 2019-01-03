@@ -24,16 +24,16 @@ class QuestionDetailViewModel @Inject constructor(private val questionRepository
         viewState.value = ViewState.UpdateScreenTitle(R.string.question_detail)
     }
 
-    fun getAllQuestions(): LiveData<List<Question>>? = questionRepository.getAllQuestions()
-
-
-
     override fun onCleared() {
         subscription.dispose()
         super.onCleared()
     }
 
-    fun getQuestionById(questionId: String?):LiveData<Question> {
+
+
+    fun getAllQuestions(): LiveData<List<Question>>? = questionRepository.getAllQuestions()
+
+    suspend fun getQuestionById(questionId: String?):LiveData<Question> {
         return questionRepository.getQuestionById(questionId)
     }
 }

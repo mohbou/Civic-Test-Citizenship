@@ -6,6 +6,8 @@ import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
 import com.mohbou.enhancedtestcivic.data.database.dao.QuestionDao
 import com.mohbou.enhancedtestcivic.data.database.utils.DBMapper
 import com.mohbou.enhancedtestcivic.domain.Question
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
 
@@ -14,13 +16,25 @@ class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
 
     }
 
-    fun getQuestionWithAnswersById(questionId:String?):LiveData<Question> {
+    suspend fun getQuestionWithAnswersById(questionId:String?):LiveData<Question> {
         val questionLiveData = MutableLiveData<Question>()
-        val question = questionDao().getQuestionById(questionId)
-        val questionWithAnswersEntity = question.value
-        questionLiveData.value=DBMapper.toQuestion(questionWithAnswersEntity!!)
+        withContext(Dispatchers.IO) {
+
+            val question = questionDao().getQuestionById(questionId)
+
+            question?.let {
+                questionLiveData.postValue(DBMapper.toQuestion(it))
+            }
+
+
+            return@withContext questionLiveData
+
+        }
+
         return questionLiveData
+
     }
+
     private fun questionDao(): QuestionDao {
         return civicTestDatabase.getQuestionDao()
     }

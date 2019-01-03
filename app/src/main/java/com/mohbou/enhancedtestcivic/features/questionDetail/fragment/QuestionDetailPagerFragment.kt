@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.common.Constants
@@ -59,7 +60,7 @@ class QuestionDetailPagerFragment : Fragment() {
         setupViewPager()
         subscribeForAllQuestion()
         subscribeForViewStateChange()
-
+        lifecycle.addObserver(viewModel)
 
     }
 
@@ -79,11 +80,15 @@ class QuestionDetailPagerFragment : Fragment() {
     }
 
     private fun showErrorMessage(@StringRes title: Int,@StringRes message: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Snackbar.make(question_detail_fragment, message, Snackbar.LENGTH_LONG).show()
     }
 
     private fun showLoading(show: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        if (show) {
+            progress_bar_pager.visibility = View.VISIBLE
+        } else {
+            progress_bar_pager.visibility = View.GONE
+        }
     }
 
     private fun subscribeForAllQuestion() {

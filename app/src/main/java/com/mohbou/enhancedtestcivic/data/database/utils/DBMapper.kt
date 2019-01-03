@@ -5,6 +5,7 @@ import com.mohbou.enhancedtestcivic.data.database.entities.QuestionEntity
 import com.mohbou.enhancedtestcivic.data.database.entities.QuestionWithAnswersEntity
 import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.domain.Question
+import java.util.*
 
 object DBMapper {
 
@@ -13,7 +14,7 @@ object DBMapper {
     }
 
     private fun toAnswerEntity(answer: Answer,questionId:String): AnswerEntity {
-        return AnswerEntity(answer.id, answer.answer, questionId)
+        return AnswerEntity(id= UUID.randomUUID().toString(),answer = answer.answer, questionId = questionId)
     }
 
     fun toEntityQuestionList(questions: List<Question>): List<QuestionEntity> {
@@ -34,12 +35,13 @@ object DBMapper {
     }
 
     fun toAnswersEntityList(questions:List<Question>):List<AnswerEntity> {
-       return questions.flatMap (this::toAnswerEntityList).toList()
+       return questions.flatMap {
+         question ->  toAnswerEntityList(question)}.toList()
     }
 
     fun toQuestion(questionEntity: QuestionWithAnswersEntity):Question {
 
-        return Question(questionEntity.question.id,questionEntity.question.question,questionEntity.answers,questionEntity.question.review)
+        return Question(questionEntity.question.id,questionEntity.question.question,toAnswerList(questionEntity.answers),questionEntity.question.review)
 
     }
 

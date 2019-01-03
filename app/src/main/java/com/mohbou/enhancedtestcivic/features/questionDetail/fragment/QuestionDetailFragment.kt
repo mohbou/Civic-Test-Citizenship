@@ -9,11 +9,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.mohbou.enhancedtestcivic.R
+import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.common.Constants
 import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.features.questionDetail.adapters.QuestionDetailAdapter
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -22,6 +27,8 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
     private var questionId: String? = null
 
     private var listener: OnFragmentInteractionListener? = null
+
+    private var job:Job?=null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -37,6 +44,10 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
         }
     }
 
+    init {
+        QuestionApplication.appComponent.inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -48,15 +59,20 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
         subscribeForAnswerList()
+        lifecycle.addObserver(viewModel)
 
     }
 
     private fun subscribeForAnswerList() {
-        viewModel.getQuestionById(questionId).observe(this,Observer {
-          question->  question?.let { setAdapterItems(question.answers) }
+         job = GlobalScope.launch(Dispatchers.Main) {
+            viewModel.getQuestionById(questionId).observe(this@QuestionDetailFragment, Observer { question ->
+                question?.let {
+                    textView_question.text = question.question
+                    setAdapterItems(question.answers) }
 
 
-        })
+            })
+        }
     }
     private fun setAdapterItems(list: List<Answer>?) {
         questionDetailAdapter?.listItems = list
@@ -86,6 +102,8 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
     override fun onDetach() {
         super.onDetach()
         listener = null
+        job?.cancel()
+
     }
 
     /**

@@ -12,7 +12,7 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
         return dbRepository.getAllQuestions()
     }
 
-    fun getQuestionById(questionId: String?): LiveData<Question> {
+    suspend fun getQuestionById(questionId: String?): LiveData<Question> {
         return dbRepository.getQuestionWithAnswersById(questionId)
     }
 

@@ -1,7 +1,6 @@
 package com.mohbou.enhancedtestcivic.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.google.gson.Gson
@@ -9,7 +8,6 @@ import com.mohbou.enhancedtestcivic.data.database.CivicTestDatabase
 import com.mohbou.enhancedtestcivic.data.database.utils.DBMapper
 import com.mohbou.enhancedtestcivic.domain.MyJson
 import com.mohbou.enhancedtestcivic.domain.Question
-import javax.inject.Inject
 
 class PopulateDatabaseWorker   constructor(val context: Context,workerParams:WorkerParameters): Worker(context,workerParams) {
 
@@ -23,9 +21,8 @@ class PopulateDatabaseWorker   constructor(val context: Context,workerParams:Wor
         civicTestDatabase.getQuestionDao().addAllQuestions(
             DBMapper.toEntityQuestionList(questions)
         )
-        civicTestDatabase.getQuestionDao()
+        val answers = civicTestDatabase.getQuestionDao()
             .addAllAnswers(DBMapper.toAnswersEntityList(questions))
-
 
 
         return Result.success()

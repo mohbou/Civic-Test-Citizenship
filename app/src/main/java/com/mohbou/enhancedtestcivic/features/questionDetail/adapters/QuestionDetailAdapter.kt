@@ -24,6 +24,6 @@ class QuestionDetailAdapter(val context:Context): androidx.recyclerview.widget.R
     }
 
     override fun onBindViewHolder(holder: QuestionDetailViewHolder, position: Int) {
-        holder?.setData(listItems?.get(position))
+        holder.setData(listItems?.get(position))
     }
 }

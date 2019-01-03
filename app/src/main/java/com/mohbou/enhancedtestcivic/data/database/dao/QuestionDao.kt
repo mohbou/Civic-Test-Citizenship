@@ -21,7 +21,7 @@ interface QuestionDao {
     fun addAllQuestions(questions:List<QuestionEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAllAnswers(answers:List<AnswerEntity>)
+    fun addAllAnswers(answers:List<AnswerEntity>):List<Long>
 
     @Transaction
     @Query("SELECT * FROM question_table")
@@ -35,12 +35,14 @@ interface QuestionDao {
 
     @Transaction
     @Query("SELECT * FROM question_table WHERE id = :questionId")
-    fun getQuestionById(questionId:String?):LiveData<QuestionWithAnswersEntity>
+    fun getQuestionById(questionId:String?):QuestionWithAnswersEntity
 
     @Query("SELECT COUNT(id) FROM question_table")
     fun getNumberOfRows(): Single<Int>?
 
-    @Transaction
-    @Query("SELECT * FROM question_table")
-    fun getAllQuestionsBis():Single<List<QuestionWithAnswersEntity>>?
+    @Query("SELECT * FROM answer")
+    fun getAllAnswers(): LiveData<List<AnswerEntity>>?
+
+    @Query("SELECT COUNT(id) FROM answer")
+    fun getAnswerCount(): Int?
 }
