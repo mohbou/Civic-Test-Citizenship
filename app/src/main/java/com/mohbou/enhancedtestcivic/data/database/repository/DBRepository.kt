@@ -13,8 +13,13 @@ class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
 
     fun getAllQuestions(): LiveData<List<Question>> {
         return questionDao().getQuestions()
-
     }
+
+    fun getAllQuestionsToReview(): LiveData<List<Question>> {
+        return questionDao().getAllQuestionsToReview()
+    }
+
+
 
     suspend fun getQuestionWithAnswersById(questionId: String?): LiveData<Question> {
         val questionLiveData = MutableLiveData<Question>()

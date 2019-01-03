@@ -12,6 +12,10 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
         return dbRepository.getAllQuestions()
     }
 
+    fun getAllQuestionstoReview(): LiveData<List<Question>> {
+        return dbRepository.getAllQuestionsToReview()
+    }
+
     suspend fun getQuestionById(questionId: String?): LiveData<Question> {
         return dbRepository.getQuestionWithAnswersById(questionId)
     }
@@ -19,6 +23,8 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
    suspend fun updateQuestionReview(question:Question) {
         dbRepository.updateQuestionReview(question)
     }
+
+
 
 
 }
