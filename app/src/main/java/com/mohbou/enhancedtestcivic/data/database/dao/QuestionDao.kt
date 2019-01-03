@@ -48,4 +48,7 @@ interface QuestionDao {
 
     @Query("SELECT COUNT(id) FROM answer")
     fun getAnswerCount(): Int?
+
+    @Query("SELECT * FROM question_table WHERE review= 1")
+    fun getAllQuestionsToReview():LiveData<List<Question>>
 }

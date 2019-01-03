@@ -4,11 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.annotation.StringRes
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -26,15 +23,6 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [QuestionListFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [QuestionListFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class QuestionListFragment : androidx.fragment.app.Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
@@ -48,12 +36,17 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
 
     private var job: Job?=null
 
+    private lateinit var menu:Menu
+
 
     init {
         QuestionApplication.appComponent.inject(this)
     }
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_list_questions, container, false)
@@ -70,6 +63,25 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         lifecycle.addObserver(viewModel)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.question_list_menu,menu)
+        this.menu = menu
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        return when(item.itemId) {
+            R.id.review_menu_item -> {
+                viewModel.toggleReview()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
+    }
+
     private fun subscribeForUpdateQuestionReview() {
 
         homeAdapter?.questionReviewedClicked?.observe(this, Observer {
@@ -79,9 +91,6 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         })
 
     }
-
-
-
 
     @SuppressLint("CheckResult")
     private fun subscribeForQuestionDetail() {
@@ -94,8 +103,6 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         viewModel.getAllQuestions()?.observe(this, Observer {
               setAdapterItems(it)
         })
-
-
     }
 
     private fun setAdapterItems(list: List<Question>?) {
@@ -112,12 +119,25 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         when (viewState) {
             is QuestionListViewModel.ViewState.UpdateScreenTitle -> activity!!.setTitle(viewState.screenTitle)
             is QuestionListViewModel.ViewState.ShowLoading -> showLoading(viewState.show)
-            is QuestionListViewModel.ViewState.ShowErrorMessage -> showErrorMessage(viewState.title, viewState.message)
+            is QuestionListViewModel.ViewState.ShowErrorMessage -> showMessage(viewState.title, viewState.message)
+            is QuestionListViewModel.ViewState.OnToggleReview -> toggleIconReview(viewState.review)
+            is QuestionListViewModel.ViewState.ShowUpdateMessage -> showMessage(viewState.title,viewState.message)
 
         }
     }
 
-    private fun showErrorMessage(@StringRes title: Int, @StringRes message: Int) {
+    private fun toggleIconReview(review: Boolean) {
+        val menuItem = menu.findItem(R.id.review_menu_item)
+        if(review) {
+            menuItem.setIcon(R.drawable.ic_review_selected)
+        }
+        else
+        {
+            menuItem.setIcon(R.drawable.ic_review_unselected)
+        }
+    }
+
+    private fun showMessage(@StringRes title: Int, @StringRes message: Int) {
         Snackbar.make(question_list_fragment_root, message, Snackbar.LENGTH_LONG).show()
     }
 
@@ -145,18 +165,12 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-//        if (context is OnFragmentInteractionListener) {
-//            listener = context
-//        } else {
-//            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-//        }
     }
 
     override fun onDetach() {

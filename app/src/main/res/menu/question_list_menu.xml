@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/review_menu_item"
+          android:contentDescription="@string/review"
+          android:icon="@drawable/ic_review_unselected"
+          android:title="@string/select_to_review_description"
+          app:showAsAction="always" />
+</menu>
