@@ -23,5 +23,4 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
    suspend fun updateQuestionReview(question:Question) {
         dbRepository.updateQuestionReview(question)
     }
-
 }
