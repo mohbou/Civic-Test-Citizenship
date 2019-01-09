@@ -104,7 +104,6 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun subscribeForUpdateQuestionReview() {
-
         homeAdapter?.questionReviewedClicked?.observe(this, Observer {
             job =   GlobalScope.launch(Dispatchers.Main) {
                 viewModel.updateQuestionReview(it)
