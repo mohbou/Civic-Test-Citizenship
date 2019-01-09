@@ -98,7 +98,6 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
             startActivity(viewModel.intentForQuestionDetailActivity(it.id))
         }
     }
-
     private fun subscribeForQuestionList() {
         viewModel.getAllQuestions()?.observe(this, Observer {
               setAdapterItems(it)
