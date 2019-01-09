@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -64,7 +63,6 @@ class AudioPlayerService : Service() {
                 "Track 0$index.mp3"
             else "Track $index.mp3"
 
-            Log.d("linksS",BASE_URL+fileName)
             val mediaSource = ExtractorMediaSource.Factory(cacheDataSourceFactory).createMediaSource(Uri.parse(BASE_URL+fileName))
             concatenatingMediaSource.addMediaSource(mediaSource)
         }
