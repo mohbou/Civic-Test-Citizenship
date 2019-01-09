@@ -7,5 +7,11 @@
     <string name="review_selected">Question selected for review</string>
     <string name="review_unselected">Question unmarked for review</string>
     <string name="update_review">Update</string>
+    <string name="listen_to_questions">Listen to Questions</string>
+    <string name="playback_channel_name">Playback</string>
+    <string name="download_channel_name">Download</string>
+    <string name="stop_player">Stop player</string>
+    <string name="stop">Stop</string>
+    <string name="stop_button">Stop</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.mohbou.enhancedtestcivic.features.home.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -9,12 +10,14 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.snackbar.Snackbar
 import com.mohbou.enhancedtestcivic.R
 import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.domain.Question
 import com.mohbou.enhancedtestcivic.features.home.adapters.HomeAdapter
 import com.mohbou.enhancedtestcivic.features.home.viewmodel.QuestionListViewModel
+import com.mohbou.exoplayerdemo.AudioPlayerService
 import kotlinx.android.synthetic.main.fragment_list_questions.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -37,6 +40,9 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
     private var job: Job?=null
 
     private lateinit var menu:Menu
+
+    private var start: Boolean = false
+    private var action: Int? = 0
 
 
     init {
@@ -75,6 +81,21 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
         return when(item.itemId) {
             R.id.review_menu_item -> {
                 viewModel.toggleReview()
+                true
+            }
+
+            R.id.play_menu_item -> {
+                action = if (start) {
+            //                    btn_stop.text = "Start"
+                    0
+                } else {
+            //                    btn_stop.text = "Stop"
+                    1
+                }
+                start = !start
+                val intentPause = Intent(requireContext(), AudioPlayerService::class.java)
+                intentPause.putExtra(AudioPlayerService.PLAY_PAUSE_ACTION, action!!)
+                Util.startForegroundService(requireContext(), intentPause)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -190,7 +211,6 @@ class QuestionListFragment : androidx.fragment.app.Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
