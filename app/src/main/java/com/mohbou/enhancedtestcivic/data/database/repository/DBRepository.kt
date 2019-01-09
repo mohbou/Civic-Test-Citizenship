@@ -47,4 +47,10 @@ class DBRepository(private val civicTestDatabase: CivicTestDatabase) {
         return civicTestDatabase.getQuestionDao()
     }
 
+     suspend fun updateQuestionReviewToggle(questionId: String?, review: Boolean) {
+         withContext(Dispatchers.IO) {
+             questionDao().updateQuestionReview(questionId, if (review) 1 else 0)
+         }
+    }
+
 }

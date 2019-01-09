@@ -51,4 +51,7 @@ interface QuestionDao {
 
     @Query("SELECT * FROM question_table WHERE review= 1")
     fun getAllQuestionsToReview():LiveData<List<Question>>
+
+    @Query("UPDATE question_table SET review = :review WHERE id = :questionId")
+    fun updateQuestionReview(questionId: String?, review: Int)
 }

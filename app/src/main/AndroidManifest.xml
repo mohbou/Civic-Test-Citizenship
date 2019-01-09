@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".features.questionDetail.activity.QuestionDetailActivity"/>
+        <activity android:name=".features.questionDetail.activity.QuestionDetailActivity" android:parentActivityName=".features.home.activity.MainActivity"/>
     </application>
 
 </manifest>

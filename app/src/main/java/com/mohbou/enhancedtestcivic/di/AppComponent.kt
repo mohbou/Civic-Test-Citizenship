@@ -7,6 +7,7 @@ import com.mohbou.enhancedtestcivic.features.home.fragment.QuestionListFragment
 import com.mohbou.enhancedtestcivic.features.home.viewmodel.QuestionListViewModel
 import com.mohbou.enhancedtestcivic.features.questionDetail.fragment.QuestionDetailFragment
 import com.mohbou.enhancedtestcivic.features.questionDetail.fragment.QuestionDetailPagerFragment
+import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailItemViewModel
 import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
 import dagger.Component
 
@@ -21,6 +22,7 @@ interface AppComponent {
     fun inject(questionDetailPagerFragment: QuestionDetailPagerFragment)
     fun inject(questionDetailFragment: QuestionDetailFragment)
     fun inject(questionDetailViewModel: QuestionDetailViewModel)
+    fun inject(questionDetailItemViewModel: QuestionDetailItemViewModel)
     fun inject(civicTestDatabase: CivicTestDatabase)
 
 

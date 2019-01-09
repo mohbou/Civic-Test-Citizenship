@@ -23,4 +23,8 @@ class QuestionRepository @Inject constructor(val networkRepository: NetworkRepos
    suspend fun updateQuestionReview(question:Question) {
         dbRepository.updateQuestionReview(question)
     }
+
+     suspend fun updateQuestionReviewToggle(questionId: String?, review: Boolean) {
+        dbRepository.updateQuestionReviewToggle(questionId,review)
+    }
 }

@@ -1,6 +1,5 @@
 package com.mohbou.enhancedtestcivic.features.questionDetail.fragment
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,7 @@ import com.mohbou.enhancedtestcivic.application.QuestionApplication
 import com.mohbou.enhancedtestcivic.common.Constants
 import com.mohbou.enhancedtestcivic.domain.Answer
 import com.mohbou.enhancedtestcivic.features.questionDetail.adapters.QuestionDetailAdapter
-import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailViewModel
+import com.mohbou.enhancedtestcivic.features.questionDetail.viewmodel.QuestionDetailItemViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,14 +24,11 @@ import javax.inject.Inject
 class QuestionDetailFragment : androidx.fragment.app.Fragment() {
 
     private var questionId: String? = null
-
-    private var listener: OnFragmentInteractionListener? = null
-
     private var job:Job?=null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: QuestionDetailViewModel
+    private lateinit var viewModel: QuestionDetailItemViewModel
 
     private var questionDetailAdapter: QuestionDetailAdapter? =null
 
@@ -40,10 +36,8 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             questionId = it.getString(Constants.QUESTION_ID)
-
         }
     }
-
     init {
         QuestionApplication.appComponent.inject(this)
     }
@@ -52,32 +46,59 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_question_detail, container, false)
-        viewModel = ViewModelProviders.of(activity!!,viewModelFactory).get(QuestionDetailViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!,viewModelFactory).get(questionId!!,QuestionDetailItemViewModel::class.java)
+        viewModel.questionId =questionId
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        subscribeForViewStateChange()
         setupRecyclerView()
         subscribeForAnswerList()
+        setupFabListener()
         lifecycle.addObserver(viewModel)
+    }
 
+    private fun subscribeForViewStateChange() {
+        viewModel.viewState.observe(this,Observer {
+            updateViewState(it)
+        })
+    }
+
+    private fun updateViewState(viewState: QuestionDetailItemViewModel.ViewState?) {
+        when(viewState) {
+            is QuestionDetailItemViewModel.ViewState.UpdateScreenTitle -> activity?.setTitle(viewState.screenTitle)
+            is QuestionDetailItemViewModel.ViewState.OnReviewToggled -> toggleFabIcon(viewState.review)
+
+        }
+    }
+
+    private fun toggleFabIcon(review: Boolean) {
+        review_toggle_button.setImageResource(if(review) R.drawable.ic_review_selected else R.drawable.ic_review_unselected )
     }
 
     private fun subscribeForAnswerList() {
-         job = GlobalScope.launch(Dispatchers.Main) {
+        job=  GlobalScope.launch(Dispatchers.Main) {
             viewModel.getQuestionById(questionId).observe(this@QuestionDetailFragment, Observer { question ->
                 question?.let {
                     textView_question.text = question.question
+                    toggleFabIcon(question.review!!)
                     setAdapterItems(question.answers) }
 
 
-            })
-        }
+            })}
     }
     private fun setAdapterItems(list: List<Answer>?) {
         questionDetailAdapter?.listItems = list
     }
+    private fun setupFabListener() {
+        review_toggle_button.setOnClickListener {
+            job= GlobalScope.launch(Dispatchers.Main) {
+                viewModel.updateQuestionReview()
+            }
 
+        }
+    }
     private fun setupRecyclerView() {
         val layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         recycler_view_answer.layoutManager = layoutManager
@@ -89,39 +110,11 @@ class QuestionDetailFragment : androidx.fragment.app.Fragment() {
         )
         questionDetailAdapter = QuestionDetailAdapter(activity!!.applicationContext)
         recycler_view_answer.adapter = questionDetailAdapter
-
     }
-
-
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-
-
     override fun onDetach() {
         super.onDetach()
-        listener = null
         job?.cancel()
-
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-
-        fun onFragmentInteraction(uri: Uri)
-    }
-
     companion object {
 
         @JvmStatic

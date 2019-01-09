@@ -34,6 +34,8 @@ class QuestionDetailPagerFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel:QuestionDetailViewModel
 
+    private var currentItem:Boolean = false
+
 
     init {
         QuestionApplication.appComponent.inject(this)
@@ -98,12 +100,14 @@ class QuestionDetailPagerFragment : Fragment() {
 
     private fun setAdapterItems(questionList: List<Question>?) {
         questionDetailPagerAdapter?.listItems=questionList
+       if(!currentItem) {
+           questionList?.forEachIndexed { index, question ->
+               if (question.id == questionId)
+                   question_detail_pager.currentItem = index
+                   currentItem = true
 
-        questionList?.forEachIndexed{index,question ->
-            if(question.id==questionId)
-                question_detail_pager.currentItem=index
-
-        }
+           }
+       }
     }
 
     private fun setupViewPager() {
